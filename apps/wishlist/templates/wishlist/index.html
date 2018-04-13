@@ -1,0 +1,71 @@
+<html>
+    <head>
+         <meta charset="utf-8">
+         <title>Login/Registration</title>
+         {% load static %}
+            <link rel="stylesheet" href="{% static 'wishlist/style.css' %}">
+    </head>
+    <body>
+        <h1>WELCOME!</h1>
+        <div class="welcome" >
+            <h1>Register</h1>
+            <form action='validate' method='post'>    
+                {% csrf_token %}
+                <label> 
+                    Name:
+                    <input type="text" name="name" placeholder="Enter your name">
+                </label>
+                {% for message in messages %}
+                    {% if 'name' in message.extra_tags %}
+                        <p class="error">{{message}}</p>
+                    {% endif %}
+                {% endfor %}
+                <label>
+                    Username:
+                    <input type="text" name="username"  placeholder="Create a username">
+                </label>
+                <!-- {% for message in messages %}
+                    {% if 'username' in message.extra_tags %}
+                        <p class="error">{{message}}</p>
+                    {% endif %}
+                {% endfor%} -->
+                <label>
+                    Password: 
+                    <input type="password" name="password"  placeholder="Create a password (8 char)">
+                </label>
+                <p>*Password should be at least 8 characters</p>
+                {% for message in messages %}
+                    {% if 'password' in message.extra_tags %}
+                        <p class="error">{{message}}</p>
+                    {% endif %}
+                {% endfor %}
+                <label>
+                    PW Confirmation: 
+                    <input type="password" name="pw_confirmation"  placeholder="Re-enter your password">
+                </label>
+                <input type="submit" value="Register">
+            </form>
+        </div>
+        <div class ="welcome">
+            <h1>Login</h1>
+            {% for message in messages %}
+                {% if 'login' in message.extra_tags %}
+                    <p class="error">{{message}}</p>
+                {% endif %}
+            {% endfor %}
+            <form action='login' method='post'>
+                {% csrf_token %}
+                <label>
+                    Username: 
+                    <input type="text" name="username"  placeholder="Enter your username">
+                </label>
+                <label>
+                    Password: 
+                    <input type="password" name="password"  placeholder="Enter your password">
+                </label>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </body>
+</html>
+         

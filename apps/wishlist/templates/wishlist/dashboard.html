@@ -1,0 +1,121 @@
+<html>
+    <head>
+         <meta charset="utf-8">
+         <title>My Wish List</title>
+         {% load static %}
+         <link rel="stylesheet" href="{% static 'wishlist/style.css' %}">
+    </head>
+    <body>
+        <div class="links">
+            <a href="/">Logout</a>
+        </div>
+        <h1> Hello {{request.session.name}}!</h1>
+
+        <div>
+            <h2>Your Wish List:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Item
+                        </th>
+                        <th>
+                            Added By
+                        </th>
+                        <th>
+                            Date Added
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                {% for item in items %}
+                        <tr>
+                        {% if item.creator.id == request.session.id %}
+                            <td>
+                                <a href="wish_items/{{item.id}}">{{item.item_name}}</a>
+                            </td>
+                            <td>
+                                {{item.creator.name}}
+                            </td>
+                            <td>
+                                {{item.created_at}}
+                            </td>
+                            
+                            <td>
+                                <a href="/delete/{{item.id}}">Delete</a>
+                            </td>
+            
+                        {% endif%}
+                        </tr>
+                {% endfor %}
+                {% for liked_item in liked_items %}
+                        <tr>
+                        {% if liked_item.id != item.id %}
+                            <td>
+                                <a href="wish_items/{{liked_item.id}}">{{liked_item.item_name}}</a>
+                            </td>
+                            <td>
+                                {{liked_item.creator.name}}
+                            </td>
+                            <td>
+                                {{liked_item.created_at}}
+                            </td>
+                            
+                            <td>
+                                <a href="/remove/{{liked_item.id}}">Remove from my wishlist</a>
+                            </td>
+            
+                        {% endif%}
+                        </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>
+                <h2>Other Users' Wish List:</h2>
+                <table >
+                    <thead>
+                        <tr>
+                            <th>
+                                Item
+                            </th>
+                            <th>
+                                Added By
+                            </th>
+                            <th>
+                                Date Added
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    {% for item in items %}
+                        {% if item.creator.id != request.session.id %}
+                            {% if item.id != liked_item.id %}
+                            <tr>
+                                <td>
+                                    <a href="/wish_items/{{item.id}}">{{item.item_name}}</a>
+                                </td>
+                                <td>
+                                    {{item.creator.name}}
+                                </td>
+                                <td>
+                                    {{item.created_at}}
+                                </td>
+                                <td>
+                                    <a href="/add/{{item.id}}">Add to my wishlist</a>
+                                </td>
+                             </tr>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </table>
+        </div>
+        <div class="links">
+                <a href="/create">Add Item</a>
+        </div>
+    
+    </body>
+</html>
